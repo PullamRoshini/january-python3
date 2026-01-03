@@ -1,0 +1,33 @@
+class Solution:
+    def numOfWays(self, n: int) -> int:
+        MOD = 10**9 + 7
+        pd = {}
+        blocks = [[0,1,0], [1,0,1], [2,0,1], [0,1,2], [1,0,2], [2,0,2], [0,2,0], [1,2,0], [2,1,0], [0,2,1],[1,2,1], [2,1,2]]
+
+        def paint(i, current, upper):
+            if i == n - 1:
+                return 1
+            
+            key = (i, tuple(current), tuple(upper))
+
+            if key in pd:
+                return pd[key]
+            
+            pd[key] = 0
+
+            for c in blocks:
+                if current[0] == c[0] or current[1] == c[1] or current[2] == c[2]:
+                    continue
+                
+                pd[key] += paint(i+1,c, upper)
+                pd[key] %= MOD
+
+            return pd[key] % MOD
+
+        ans = 0
+
+        for c in blocks:
+            ans += paint(0,c,[None, None, None])
+            ans %= MOD
+
+        return ans
