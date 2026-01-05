@@ -1,0 +1,16 @@
+class Solution:
+    def maxMatrixSum(self, matrix: List[List[int]]) -> int:
+        total = 0
+        neg = 0
+        min_val = float('inf')
+        
+        for row in matrix:
+            for x in row:
+                if x < 0:
+                    neg += 1
+                total += abs(x)
+                min_val = min(min_val, abs(x))
+        
+        if neg % 2 == 0:
+            return total
+        return total - 2 * min_val
